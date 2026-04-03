@@ -1,0 +1,13 @@
+poc2v3:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: '<org-account-name>'
+      user: '<dbt_user>'
+      password: "{{ env_var('DBT_PASSWORD', '') }}"
+      role: '<dbt_role>'
+      database: '<target_database>'
+      schema: '<target_schema>'
+      warehouse: '<warehouse>'
+      threads: 1
