@@ -1,0 +1,10 @@
+
+target/
+dbt_packages/
+logs/
+dbt_internal_packages/
+.env
+.env.*
+profiles.local.yml
+profiles.yml
+.user.yml
