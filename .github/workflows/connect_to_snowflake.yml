@@ -10,13 +10,6 @@ env:
 jobs:
   push-to-snowflake:
     runs-on: ubuntu-latest
-    env:
-      SNOWFLAKE_CONNECTIONS_DEFAULT_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-      SNOWFLAKE_CONNECTIONS_DEFAULT_USER: ${{ secrets.SNOWFLAKE_USER }}
-      SNOWFLAKE_CONNECTIONS_DEFAULT_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-      SNOWFLAKE_CONNECTIONS_DEFAULT_ROLE: myco_git_admin
-      SNOWFLAKE_CONNECTIONS_DEFAULT_DATABASE: poc2v2
-      SNOWFLAKE_CONNECTIONS_DEFAULT_SCHEMA: poc2_schema
 
     steps:
       - name: Checkout repository
@@ -26,6 +19,22 @@ jobs:
         uses: Snowflake-Labs/snowflake-cli-action@v1.5
         with:
           cli-version: "latest"
+
+      - name: Create Snowflake CLI config
+        run: |
+          mkdir -p ~/.snowflake
+          cat << EOF > ~/.snowflake/config.toml
+          default_connection_name = "default"
+
+          [connections.default]
+          account = "${{ secrets.SNOWFLAKE_ACCOUNT }}"
+          user = "${{ secrets.SNOWFLAKE_USER }}"
+          password = "${{ secrets.SNOWFLAKE_PASSWORD }}"
+          role = "myco_git_admin"
+          warehouse = "COMPUTE_WH"
+          database = "poc2v2"
+          schema = "poc2_schema"
+          EOF
 
       - name: Trigger Git Fetch in Snowflake
         run: |
