@@ -4,24 +4,3 @@ on:
   push:
     branches: [main]
 
-jobs:
-  run-dbt:
-    runs-on: ubuntu-latest
-    env:
-      DBT_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: |
-          pip install dbt-snowflake>=1.11.3
-
-      - name: Run dbt
-        run: dbt build --profiles-dir ./poc2v3 --project-dir ./poc2v3
