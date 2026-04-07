@@ -1,0 +1,5 @@
+name: Connect to Snowflake on Push
+
+on:
+  push:
+    branches: [main]
