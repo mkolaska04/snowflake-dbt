@@ -7,8 +7,6 @@ on:
 jobs:
   push-to-snowflake:
     runs-on: ubuntu-latest
-    env:
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
