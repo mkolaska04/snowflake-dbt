@@ -4,9 +4,20 @@ on:
   push:
     branches: [main]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   push-to-snowflake:
     runs-on: ubuntu-latest
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      SNOWFLAKE_ROLE: myco_git_admin
+      SNOWFLAKE_DATABASE: poc2v2
+      SNOWFLAKE_SCHEMA: poc2_schema
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -16,6 +27,6 @@ jobs:
         with:
           cli-version: "latest"
 
-      - name: Push files to Snowflake Stage
+      - name: Trigger Git Fetch in Snowflake
         run: |
-          snow sql -q "ALTER GIT REPOSITORY my_git_repo FETCH;"
+          snow sql -q "ALTER GIT REPOSITORY snowflake_extensions FETCH;"
