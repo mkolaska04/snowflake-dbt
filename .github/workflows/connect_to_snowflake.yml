@@ -11,12 +11,12 @@ jobs:
   push-to-snowflake:
     runs-on: ubuntu-latest
     env:
-      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-      SNOWFLAKE_ROLE: myco_git_admin
-      SNOWFLAKE_DATABASE: poc2v2
-      SNOWFLAKE_SCHEMA: poc2_schema
+      SNOWFLAKE_CONNECTIONS_DEFAULT_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_CONNECTIONS_DEFAULT_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_CONNECTIONS_DEFAULT_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      SNOWFLAKE_CONNECTIONS_DEFAULT_ROLE: myco_git_admin
+      SNOWFLAKE_CONNECTIONS_DEFAULT_DATABASE: poc2v2
+      SNOWFLAKE_CONNECTIONS_DEFAULT_SCHEMA: poc2_schema
 
     steps:
       - name: Checkout repository
