@@ -1,21 +1,27 @@
-name: Sync Snowflake on push
+name: Snowflake fetch Git repository
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - name: Install SnowSQL
-        run: sudo apt-get install -y snowflake-snowsql
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
-      - name: Run FETCH in Snowflake
+      - name: Set up Snowflake CLI
+        uses: snowflakedb/snowflake-cli-action@v2.0
+
+      - name: Fetch Snowflake Git repository
         env:
-          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PASS: ${{ secrets.SNOWFLAKE_PASS }}
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ROLE: MYCO_GIT_ADMIN
+          SNOWFLAKE_WAREHOUSE: COMPUTE_WH
         run: |
-          snowsql -a $SNOWFLAKE_ACCOUNT -u $SNOWFLAKE_USER -p $SNOWFLAKE_PASS \
-            -q "ALTER GIT REPOSITORY poc2v2.poc2_schema.snowflake_extensions FETCH;"
+          snow sql --temporary-connection -q "ALTER GIT REPOSITORY POC2V2.POC2_SCHEMA.SNOWFLAKE_EXTENSIONS FETCH;"
