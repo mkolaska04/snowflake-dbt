@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: poc2
+    database: POC2V2
+    schema: POC2_SCHEMA
+    tables:
+      - name: raw_users
+        identifier: RAW_USERS
+      - name: raw_products
+        identifier: RAW_PRODUCTS
+      - name: raw_transactions
+        identifier: RAW_TRANSACTIONS
