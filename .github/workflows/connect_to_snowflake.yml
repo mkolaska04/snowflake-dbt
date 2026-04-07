@@ -4,3 +4,20 @@ on:
   push:
     branches: [main]
 
+jobs:
+  push-to-snowflake:
+    runs-on: ubuntu-latest
+    env:
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Snowflake CLI
+        uses: Snowflake-Labs/snowflake-cli-action@v1.5
+        with:
+          cli-version: "latest"
+
+      - name: Push files to Snowflake Stage
+        run: |
+          snow sql -q "ALTER GIT REPOSITORY my_git_repo FETCH;"
