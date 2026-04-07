@@ -1,41 +1,21 @@
-name: Connect to Snowflake on Push
+name: Sync Snowflake on push
 
 on:
   push:
-    branches: [main]
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    branches: [ "main" ]
 
 jobs:
-  push-to-snowflake:
+  fetch:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Install SnowSQL
+        run: sudo apt-get install -y snowflake-snowsql
 
-      - name: Setup Snowflake CLI
-        uses: Snowflake-Labs/snowflake-cli-action@v1.5
-        with:
-          cli-version: "latest"
-
-      - name: Create Snowflake CLI config
+      - name: Run FETCH in Snowflake
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASS: ${{ secrets.SNOWFLAKE_PASS }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
         run: |
-          mkdir -p ~/.snowflake
-          cat << EOF > ~/.snowflake/config.toml
-          default_connection_name = "default"
-
-          [connections.default]
-          account = "${{ secrets.SNOWFLAKE_ACCOUNT }}"
-          user = "${{ secrets.SNOWFLAKE_USER }}"
-          password = "${{ secrets.SNOWFLAKE_PASSWORD }}"
-          role = "myco_git_admin"
-          warehouse = "COMPUTE_WH"
-          database = "poc2v2"
-          schema = "poc2_schema"
-          EOF
-
-      - name: Trigger Git Fetch in Snowflake
-        run: |
-          snow sql -q "ALTER GIT REPOSITORY snowflake_extensions FETCH;"
+          snowsql -a $SNOWFLAKE_ACCOUNT -u $SNOWFLAKE_USER -p $SNOWFLAKE_PASS \
+            -q "ALTER GIT REPOSITORY poc2v2.poc2_schema.snowflake_extensions FETCH;"
