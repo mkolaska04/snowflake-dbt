@@ -15,14 +15,6 @@ jobs:
       - name: Set up Snowflake CLI
         uses: snowflakedb/snowflake-cli-action@v2.0
 
-      - name: Show branches BEFORE
-        env:
-          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-        run: |
-          snow git list-branches poc2v2.poc2_schema.snowflake_extensions --temporary-connection
-
       - name: Fetch repo
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
@@ -30,11 +22,3 @@ jobs:
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: |
           snow git fetch poc2v2.poc2_schema.snowflake_extensions --temporary-connection
-
-      - name: Show branches AFTER
-        env:
-          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-        run: |
-          snow git list-branches poc2v2.poc2_schema.snowflake_extensions --temporary-connection
