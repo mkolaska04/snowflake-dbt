@@ -1,8 +1,4 @@
-{{ config(
-    materialized='dynamic_table',
-    snowflake_warehouse='COMPUTE_WH',
-    target_lag='downstream',
-) }}
+
 
 select
   ID,

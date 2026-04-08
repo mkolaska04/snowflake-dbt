@@ -1,8 +1,5 @@
 {{ config(
-    materialized='dynamic_table',
-    snowflake_warehouse='COMPUTE_WH',
-    target_lag='5 minutes',
-    on_configuration_change='apply'
+    target_lag='1 MINUTE'
 ) }}
 
 select

@@ -15,12 +15,12 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
-
-
 models:
   poc2v3:
     +materialized: dynamic_table
+    +target_lag: DOWNSTREAM
     +on_configuration_change: apply 
+    +snowflake_warehouse: COMPUTE_WH
 
   
     
